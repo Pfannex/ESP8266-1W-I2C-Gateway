@@ -1,0 +1,54 @@
+Partlist
+
+Exported from ESP8266-1W-I2C-Gateway_V2.00.sch at 13.11.2016 08:01
+
+EAGLE Version 7.7.0 Copyright (c) 1988-2016 CadSoft
+
+Assembly variant: 
+
+Part     Value                 Device                                  Package                 Library                     Sheet
+
+C1       470pF                 C-EUC0805                               C0805                   resistor                    1
+C2       470pF                 C-EUC0805                               C0805                   resistor                    1
+C3       470pF                 C-EUC0805                               C0805                   resistor                    1
+IC1      PCA9544A              PCA9544A                                TSSOP20                 DSSCircuits                 1
+IC1.     LM324                 LM324                                   2QSP14                  seanvoisen                  1
+IC2      DS18B20               DS18B20                                 TO92-                   my                          1
+M1       WEMOS                 WEMOS                                   WEMOS                   1455413453956-wemos         1
+PC1      MINI360HMTHROUGH-HOLE MINI360HMTHROUGH-HOLE                   MINI360HM               ESP8266_1wire_Gateway_V1.15 1
+PF1      500mA                 PTC-F1206                               F1206                   polyswitch                  1
+POT1     10k                   BOURN_SMD_POTENTIOMETER2.1X2.7MMPACKAGE BOURN_SMD_POTENTIOMETER bourn_smd_potentiometers    1
+Q2       BSS138                BSS138                                  SOT23                   my                          1
+R1       10k                   R-EU_R0805                              R0805                   rcl                         1
+R2       10k                   R-EU_R0805                              R0805                   rcl                         1
+R3       100R                  R-EU_R0805                              R0805                   rcl                         1
+R4       2k                    R-EU_R0805                              R0805                   rcl                         1
+R5       4k7                   R-EU_R0805                              R0805                   rcl                         1
+RN1      4k7                   4R-N0603-ARC                            0603-ARC                resistor-dil                1
+RN2      4k7                   4R-N0603-ARC                            0603-ARC                resistor-dil                1
+RN3      4k7                   4R-N0603-ARC                            0603-ARC                resistor-dil                1
+U1       MCP4725               MCP4725SOT-23                           SOT23-6                 SparkFun-AnalogIC           1
+X1                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X2                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X3                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X4                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X5                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X6                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X7                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X8                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X9                             MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X10                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X11                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X12                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X13                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X14                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X15                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+X16                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X17                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X18                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X19                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X20                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X21                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X22                            MINI_4X                                 MINI_4X                 Terminal-2 - 3,5x5          1
+X23                            MINI_3X                                 MINI_3X                 Terminal-2 - 3,5x5          1
+ZD1      DS9503                DS9503_BYPASS_JP                        TSOC6_BYPASS_J          my                          1
