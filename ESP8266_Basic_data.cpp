@@ -201,7 +201,7 @@ Topics::Topics(){
   pub.E3.item[2][1][48] = "T49";
   pub.E3.item[2][1][49] = "T50";
   
-  pub.E1.item[3] = "I2C-Sensor";
+  pub.E1.item[3] = "I2C-Sensor_HTU21";
   pub.E2.item[3][1] = "temperature";
   pub.E3.item[3][1][0] = "T1";
   pub.E3.item[3][1][1] = "T2";
@@ -214,6 +214,21 @@ Topics::Topics(){
   pub.E3.item[3][2][2] = "H3";
   pub.E3.item[3][2][3] = "H4";
   pub.E3.item[3][2][4] = "H5";
+
+  pub.E1.item[4] = "I2C-Sensor_BMP180";
+  pub.E2.item[4][1] = "temperature";
+  pub.E3.item[4][1][0] = "T1";
+  pub.E3.item[4][1][1] = "T2";
+  pub.E3.item[4][1][2] = "T3";
+  pub.E3.item[4][1][3] = "T4";
+  pub.E3.item[4][1][4] = "T5";
+  pub.E2.item[4][2] = "pressure";
+  pub.E3.item[4][2][0] = "P1";
+  pub.E3.item[4][2][1] = "P2";
+  pub.E3.item[4][2][2] = "P3";
+  pub.E3.item[4][2][3] = "P4";
+  pub.E3.item[4][2][4] = "P5";
+
 
 
 }

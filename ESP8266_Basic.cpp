@@ -18,7 +18,7 @@
 //===> variables <---------------------------------------------------------
 
 //BMP180 Luftdruck
-  //Adafruit_BMP085 bmp;
+  Adafruit_BMP085 bmp;
 //HTU21 Luftfeuchtigkeit  
   Adafruit_HTU21DF htu = Adafruit_HTU21DF();
 
@@ -55,6 +55,7 @@ void ESP8266_Basic::handle_Measurement(){
 //===> run I2C <-----------------------------------------------------
 void ESP8266_Basic::run_I2C(){
   int nDevices = 0;
+  int mDevices = 0;
   String str; char chr[15];
  
   Wire.begin(I2C_SDA, I2C_SCL);   
@@ -76,13 +77,39 @@ void ESP8266_Basic::run_I2C(){
       strcpy(chr, str.c_str());  
       strcpy(HTU21_Sensors.item[nDevices-1].humidity, chr);
     }
+    if (BMP180_begin()){
+      bmp.begin();
+      Serial.print("Found BMP180 on Channel "); 
+      Serial.println(i); 
+      
+      mDevices++;
+      BMP180_Sensors.count = mDevices;
+      BMP180_Sensors.item[mDevices-1].channel = i;
+      str = bmp.readTemperature();
+      //Serial.println(str);
+      strcpy(chr, str.c_str());  
+      strcpy(BMP180_Sensors.item[mDevices-1].temperature, chr);
+
+      str = bmp.readPressure()/100;
+      strcpy(chr, str.c_str());  
+      strcpy(BMP180_Sensors.item[mDevices-1].pressure, chr);
+   }
   }
-  for (int i=0; i<HTU21_Sensors.count; i++){
-    Serial.println(HTU21_Sensors.item[i].temperature);
-    Serial.println(HTU21_Sensors.item[i].humidity);
-    pub(3,1,i, HTU21_Sensors.item[i].temperature);
-    pub(3,2,i, HTU21_Sensors.item[i].humidity);
-  }
+
+    for (int i=0; i<HTU21_Sensors.count; i++){
+      Serial.println(HTU21_Sensors.item[i].temperature);
+      Serial.println(HTU21_Sensors.item[i].humidity);
+      pub(3,1,i, HTU21_Sensors.item[i].temperature);
+      pub(3,2,i, HTU21_Sensors.item[i].humidity);
+    }
+    for (int i=0; i<BMP180_Sensors.count; i++){
+      Serial.println(BMP180_Sensors.item[i].temperature);
+      Serial.println(BMP180_Sensors.item[i].pressure);
+      pub(4,1,i, BMP180_Sensors.item[i].temperature);
+      pub(4,2,i, BMP180_Sensors.item[i].pressure);
+    }
+
+  
 }
 
 //===> search HTU21 <----------------------------------------------------------
@@ -95,6 +122,17 @@ bool ESP8266_Basic::HTU21_begin(){
     if (error == 0) HTU21_found = true;
     
     return HTU21_found;
+}
+//===> search BMP180 <----------------------------------------------------------
+bool ESP8266_Basic::BMP180_begin(){
+  bool BMP180_found = false;
+  byte error;
+
+    Wire.beginTransmission(0x77);
+    error = Wire.endTransmission(); 
+    if (error == 0) BMP180_found = true;
+    
+    return BMP180_found;
 }
 
 //===============================================================================
@@ -459,7 +497,7 @@ void ESP8266_Basic::handle_connections(){
 //===> start ConfigServer <----------------------------------------------------
 void ESP8266_Basic::startConfigServer(){  
   webServer.set_cfgPointer(&cfg);
-  webServer.set_sensorPointer(&DS18B20_Sensors, &HTU21_Sensors);
+  webServer.set_sensorPointer(&DS18B20_Sensors, &HTU21_Sensors, &BMP180_Sensors);
   webServer.start();
 }
 

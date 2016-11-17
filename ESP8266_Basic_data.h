@@ -14,13 +14,13 @@
 
 ********************************************************************************/
 #pragma once
-#define Version "ESP8266 1W-I2C-Gateway alpha V0.300"
+#define Version "ESP8266 1W-I2C-Gateway alpha V0.310"
  
   typedef char* topicField; 
 
 //publish struct
-  const int pub_e1 = 4;			//define TreeDepht here!!!
-  const int pub_e2 = 5;
+  const int pub_e1 = 5;			//define TreeDepht here!!!
+  const int pub_e2 = 6;
   const int pub_e3 = 50;
   const int pub_e4 = 0;
   
@@ -44,8 +44,8 @@
   };
   
 //subscribe struct
-  const int sub_e1 = 4;			//define TreeDepht here!!!
-  const int sub_e2 = 5;
+  const int sub_e1 = 5;			//define TreeDepht here!!!
+  const int sub_e2 = 6;
   const int sub_e3 = 4;
   const int sub_e4 = 0;
   
@@ -137,4 +137,15 @@ private:
     THTU21_Sensor item[10]; 
   };
 
+// BMP180 struct
+  typedef struct TBMP180_Sensor{
+    int channel;
+    char pressure[15];
+    char temperature[15];
+  };
+  
+  typedef struct TBMP180_Sensors{
+    int count;
+    TBMP180_Sensor item[10]; 
+  };
   

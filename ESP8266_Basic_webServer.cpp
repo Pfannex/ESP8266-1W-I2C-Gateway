@@ -48,9 +48,10 @@ void ESP8266_Basic_webServer::set_cfgPointer(CFG *p){
   cfg = p;
 }
 //===> Sesorstruct pointer <---------------------------------------------------
-void ESP8266_Basic_webServer::set_sensorPointer(TDS18B20_Sensors *p, THTU21_Sensors *q){
+void ESP8266_Basic_webServer::set_sensorPointer(TDS18B20_Sensors *p, THTU21_Sensors *q, TBMP180_Sensors *r){
   DS18B20_Sensors = p;
   HTU21_Sensors = q;
+  BMP180_Sensors = r;
 }
 //===> Callback for CFGchange <------------------------------------------------
 void ESP8266_Basic_webServer::set_saveConfig_Callback(CallbackFunction c){
@@ -92,36 +93,37 @@ void ESP8266_Basic_webServer::sensorPageHandler(){
   "<b><h3>1Wire</h3></b>";
   
   for (int i = 0; i < DS18B20_Sensors->count; i++) {	
-	rm += "<font face='Courier New'>";
+	  rm += "<font face='Courier New'>";
 	
-	char str[5];
-	sprintf(str, "%03d - ", i+1);
-	rm += "<tab indent=20>";
-	rm += String(str) + String(DS18B20_Sensors->item[i].serial) + " - " + 
-	                    String(DS18B20_Sensors->item[i].temperature) + "&deg;C<br>";
+	  char str[15];
+	  sprintf(str, "%03d - ", i+1);
+	  rm += "<tab indent=20>";
+	  rm += String(str) + String(DS18B20_Sensors->item[i].serial) + " - " + 
+	                      String(DS18B20_Sensors->item[i].temperature) + " &deg;C<br>";
   }
 
   rm += "</font></p>"
   "<font face='VERDANA,ARIAL,HELVETICA'> <b><h3>I2C</h3></b> </font>";
   
   for (int i=0; i<HTU21_Sensors->count; i++){  
-  rm += "<font face='Courier New'>";
+    rm += "<font face='Courier New'>";
   
-  char str[5];
-  sprintf(str, "%03d - ", i+1);
-  rm += "<tab indent=20>";
-  rm += String(str) + String(HTU21_Sensors->item[i].temperature) + "&deg;C" + " / " + 
-                      String(HTU21_Sensors->item[i].humidity) + "%<br>";
+    char str[15];
+    sprintf(str, "%03d - ", i+1);
+    rm += "<tab indent=20>";
+    rm += String(str) + String(HTU21_Sensors->item[i].temperature) + " &deg;C" + " / " + 
+                        String(HTU21_Sensors->item[i].humidity) + " %<br>";
+  }
+  for (int i=0; i<BMP180_Sensors->count; i++){  
+    rm += "<font face='Courier New'>";
+  
+    char str[15];
+    sprintf(str, "%03d - ", i+1);
+    rm += "<tab indent=20>";
+    rm += String(str) + String(BMP180_Sensors->item[i].temperature) + " &deg;C" + " / " + 
+                        String(BMP180_Sensors->item[i].pressure) + " hPa<br>";
   }
 
-/*
-  for (int i=0; i<HTU21_Sensors.count; i++){
-    Serial.println(HTU21_Sensors.item[i].temperature);
-    Serial.println(HTU21_Sensors.item[i].humidity);
-    pub(3,1,i, HTU21_Sensors.item[i].temperature);
-    pub(3,2,i, HTU21_Sensors.item[i].humidity);
-  }
-*/
 
   rm += "</font></p>"
   "<font face='VERDANA,ARIAL,HELVETICA'><font size='-2'>&copy; by Pf@nne/16   |   " + String(cfg->version) + "</font>"
