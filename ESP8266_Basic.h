@@ -54,8 +54,8 @@ Erledigt: OTA onDemand
   #include <DallasTemperature.h> 
   //I2C
   #include <Wire.h>              
-  #include <Adafruit_BMP085.h>
-  #include "Adafruit_HTU21DF.h"  //Temp / Humi
+  #include <Adafruit_BMP085.h>   //Temperature / Pressure
+  #include "Adafruit_HTU21DF.h"  //Temperature / Humidity
 
 //MySQL
   #include <MySQL_Connection.h>
@@ -88,8 +88,7 @@ public:
   void handle_Measurement();
   TDS18B20_Sensors DS18B20_Sensors;
   THTU21_Sensors HTU21_Sensors;
-
-  
+  TBMP180_Sensors BMP180_Sensors;
  
 private:
   WiFiClient wifi_client;
@@ -105,6 +104,7 @@ private:
   void scanI2C();
   void mux(byte channel);  
   bool HTU21_begin();
+  bool BMP180_begin();
   
   //WiFi-Manager-Control---------------
   void startConfigServer();
