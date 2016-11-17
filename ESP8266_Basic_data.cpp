@@ -148,7 +148,7 @@ Topics::Topics(){
   pub.E3.item[1][0][1] = "MQTT";
   pub.E3.item[1][0][2] = "updateFirmware";
 
-  pub.E1.item[2] = "Sensor";
+  pub.E1.item[2] = "1W-Sensor";
   pub.E2.item[2][1] = "temperature";
   pub.E3.item[2][1][0] = "T1";
   pub.E3.item[2][1][1] = "T2";
@@ -200,6 +200,20 @@ Topics::Topics(){
   pub.E3.item[2][1][47] = "T48";
   pub.E3.item[2][1][48] = "T49";
   pub.E3.item[2][1][49] = "T50";
+  
+  pub.E1.item[3] = "I2C-Sensor";
+  pub.E2.item[3][1] = "temperature";
+  pub.E3.item[3][1][0] = "T1";
+  pub.E3.item[3][1][1] = "T2";
+  pub.E3.item[3][1][2] = "T3";
+  pub.E3.item[3][1][3] = "T4";
+  pub.E3.item[3][1][4] = "T5";
+  pub.E2.item[3][2] = "humidity";
+  pub.E3.item[3][2][0] = "H1";
+  pub.E3.item[3][2][1] = "H2";
+  pub.E3.item[3][2][2] = "H3";
+  pub.E3.item[3][2][3] = "H4";
+  pub.E3.item[3][2][4] = "H5";
 
 
 }

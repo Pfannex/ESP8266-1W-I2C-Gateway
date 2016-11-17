@@ -14,7 +14,7 @@
 
 ********************************************************************************/
 #pragma once
-#define Version "ESP8266 AktSen alpha V0.211"
+#define Version "ESP8266 1W-I2C-Gateway alpha V0.300"
  
   typedef char* topicField; 
 
@@ -124,6 +124,17 @@ private:
     int count;
     TDS18B20_Sensor item[50]; 
   };
- 
- 
+
+// HTU21 struct
+  typedef struct THTU21_Sensor{
+    int channel;
+    char humidity[15];
+    char temperature[15];
+  };
+  
+  typedef struct THTU21_Sensors{
+    int count;
+    THTU21_Sensor item[10]; 
+  };
+
   

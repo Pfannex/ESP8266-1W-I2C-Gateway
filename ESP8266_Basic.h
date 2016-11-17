@@ -47,16 +47,27 @@ Erledigt: OTA onDemand
 //ESP8266_Basic
   #include "ESP8266_Basic_webServer.h"
   #include "ESP8266_Basic_data.h"
-  
-//Sensoren
+
+//Bus
   //1Wire direct
   #include "OneWire.h"
-  #include <DallasTemperature.h>
+  #include <DallasTemperature.h> 
+  //I2C
+  #include <Wire.h>              
+  #include <Adafruit_BMP085.h>
+  #include "Adafruit_HTU21DF.h"  //Temp / Humi
 
 //MySQL
-#include <MySQL_Connection.h>
-#include <MySQL_Cursor.h>
+  #include <MySQL_Connection.h>
+  #include <MySQL_Cursor.h>
 
+//===> GPIO <--------------------------------------------------------------
+//1Wire
+  #define oneW 2
+//I2C
+  #define I2C_SDA 4
+  #define I2C_SCL 5
+  #define MUX         0x70  //Multiplexer Address
 
 class ESP8266_Basic{
 
@@ -76,6 +87,7 @@ public:
   //AktSen
   void handle_Measurement();
   TDS18B20_Sensors DS18B20_Sensors;
+  THTU21_Sensors HTU21_Sensors;
 
   
  
@@ -89,7 +101,11 @@ private:
   long lastMeasure_time;
   long updateMeasure_time = 5000;
   void run_oneWire();
- 
+  void run_I2C();
+  void scanI2C();
+  void mux(byte channel);  
+  bool HTU21_begin();
+  
   //WiFi-Manager-Control---------------
   void startConfigServer();
   void startAccessPoint();

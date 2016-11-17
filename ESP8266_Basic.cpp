@@ -15,6 +15,15 @@
 ********************************************************************************/
 #include "ESP8266_Basic.h"
 
+//===> variables <---------------------------------------------------------
+
+//BMP180 Luftdruck
+  //Adafruit_BMP085 bmp;
+//HTU21 Luftfeuchtigkeit  
+  Adafruit_HTU21DF htu = Adafruit_HTU21DF();
+
+
+//CLASS ESP8266_Basic################################################################
 ESP8266_Basic::ESP8266_Basic() : webServer(), 
                                  mqtt_client(wifi_client)
 
@@ -39,12 +48,117 @@ void ESP8266_Basic::handle_Measurement(){
     if (now - lastMeasure_time > updateMeasure_time) {
       lastMeasure_time = now;
       run_oneWire();
+      run_I2C();
     }
   }
 }
+//===> run I2C <-----------------------------------------------------
+void ESP8266_Basic::run_I2C(){
+  int nDevices = 0;
+  String str; char chr[15];
+ 
+  Wire.begin(I2C_SDA, I2C_SCL);   
+  
+  for (int i=0; i<4; i++){
+    mux(i);
+    if (HTU21_begin()){
+      Serial.print("Found HTU21 on Channel "); 
+      Serial.println(i); 
+      
+      nDevices++;
+      HTU21_Sensors.count = nDevices;
+      HTU21_Sensors.item[nDevices-1].channel = i;
+      str = htu.readTemperature();
+      strcpy(chr, str.c_str());  
+      strcpy(HTU21_Sensors.item[nDevices-1].temperature, chr);
+  
+      str = htu.readHumidity();
+      strcpy(chr, str.c_str());  
+      strcpy(HTU21_Sensors.item[nDevices-1].humidity, chr);
+    }
+  }
+  for (int i=0; i<HTU21_Sensors.count; i++){
+    Serial.println(HTU21_Sensors.item[i].temperature);
+    Serial.println(HTU21_Sensors.item[i].humidity);
+    pub(3,1,i, HTU21_Sensors.item[i].temperature);
+    pub(3,2,i, HTU21_Sensors.item[i].humidity);
+  }
+}
+
+//===> search HTU21 <----------------------------------------------------------
+bool ESP8266_Basic::HTU21_begin(){
+  bool HTU21_found = false;
+  byte error;
+
+    Wire.beginTransmission(0x40);
+    error = Wire.endTransmission(); 
+    if (error == 0) HTU21_found = true;
+    
+    return HTU21_found;
+}
+
+//===============================================================================
+//  MUX PCA9544
+//===============================================================================
+void ESP8266_Basic::mux(byte channel){
+  byte controlRegister = 0x04;  
+  controlRegister |= channel;
+  Wire.beginTransmission(MUX);
+  if (channel == 0xFF){Wire.write(0x00);} //deselect all channels
+  else {Wire.write(controlRegister);}     //set to selected channel
+  Wire.endTransmission();
+}
+//===============================================================================
+//  Scan I2C-Bus
+//===============================================================================
+
+void ESP8266_Basic::scanI2C(){
+  byte error, address;
+  int nDevices;
+
+  Serial.println("Scanning I2C-Bus......");
+ 
+  nDevices = 0;
+  for(address = 1; address < 127; address++ )
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+ 
+    if (error == 0)
+    {
+      Serial.print("0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.print(address,HEX);
+
+      if (address == 0x77) {Serial.println(" BMP180");}
+      else if (address == 0x40) {Serial.println(" SI7021");}
+      else if (address >= 0x70 & address <= 0x77) {Serial.println(" PCA9544");}
+      else if (address >= 0x60 & address <= 0x67) {Serial.println(" MCP4725");}
+      else {Serial.println(" unknown");};
+ 
+      nDevices++;
+    }
+    else if (error==4)
+    {
+      Serial.print("Unknow error at address 0x");
+      if (address<16)
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found\n");
+  else
+    Serial.println("done\n");
+ }
+ 
 //===> run 1Wire <-----------------------------------------------------
 void ESP8266_Basic::run_oneWire(){
-  OneWire oneWire(0);                   //GPIO 0
+  OneWire oneWire(oneW);                   //GPIO 2
   DallasTemperature DS18B20(&oneWire);
   DeviceAddress DS18B20device;
   
@@ -161,29 +275,30 @@ void ESP8266_Basic::mqttBroker_Callback(char* topic, byte* payload, unsigned int
 
   if (dissectResult.found){
     if (dissectResult.itemPath == "1/0/0"){
-	  if (strcmp(value, "Reboot") == 0){
-	    ESP.restart();
+	    if (strcmp(value, "Reboot") == 0){
+	      ESP.restart();
+	    }
 	  }
-	}
     if (dissectResult.itemPath == "1/0/1"){
-	  pubConfig();
-	}
+	    pubConfig();
+	  }
     if (dissectResult.itemPath == "1/0/2"){
-    //UpdateFirmware()
-    webServer.updateFirmware();
-  }
+      //UpdateFirmware()
+      webServer.updateFirmware();
+    }
 	
     if (dissectResult.itemPath == "3/1/0"){
-	  //Write Field_01
-	  strcpy(myFile.Field_01, value);
-	  write_MyFile();
-	  updateMeasure_time = String(value).toInt();
-	}
+	    //Write Field_01
+	    strcpy(myFile.Field_01, value);
+	    write_MyFile();
+	    updateMeasure_time = String(value).toInt();
+      Serial.print("UpdateMesure_time = "); Serial.println(value);
+	  }
     if (dissectResult.itemPath == "3/0/0"){
-	  //Read Field_01
-	  strcpy(myFile.Field_01, "");
-	  read_MyFile();
-	  Serial.println(myFile.Field_01);
+	    //Read Field_01
+	    strcpy(myFile.Field_01, "");
+	    read_MyFile();
+	    Serial.println(myFile.Field_01);
 	}
   }
 }
@@ -292,7 +407,7 @@ void ESP8266_Basic::start_WiFi_connections(){
   
   read_cfg();
   read_MyFile();
-
+  
   if (start_WiFi()){
     WiFi.mode(WIFI_STA);     //exit AP-Mode if set once
 	config_running = false;
@@ -344,7 +459,7 @@ void ESP8266_Basic::handle_connections(){
 //===> start ConfigServer <----------------------------------------------------
 void ESP8266_Basic::startConfigServer(){  
   webServer.set_cfgPointer(&cfg);
-  webServer.set_sensorPointer(&DS18B20_Sensors);
+  webServer.set_sensorPointer(&DS18B20_Sensors, &HTU21_Sensors);
   webServer.start();
 }
 
@@ -440,6 +555,10 @@ bool MQTTOK = false;
     mqtt_client.loop();
 
   }
+
+    run_oneWire();
+    run_I2C();
+  
   return MQTTOK;
 }
 
