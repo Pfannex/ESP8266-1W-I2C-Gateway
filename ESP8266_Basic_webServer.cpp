@@ -108,20 +108,22 @@ void ESP8266_Basic_webServer::sensorPageHandler(){
   for (int i=0; i<HTU21_Sensors->count; i++){  
     rm += "<font face='Courier New'>";
   
-    char str[15];
-    sprintf(str, "%03d - ", i+1);
-    rm += "<tab indent=20>";
-    rm += String(str) + String(HTU21_Sensors->item[i].temperature) + " &deg;C" + " / " + 
-                        String(HTU21_Sensors->item[i].humidity) + " %<br>";
+    //char str[15];
+    //sprintf(str, "Ch %01d - ", String(HTU21_Sensors->item[i].channel).c_str());
+    //rm += "Ch " + String(HTU21_Sensors->item[i].channel);
+    rm += "Ch " + String(HTU21_Sensors->item[i].channel) + " - ";
+    rm += String(HTU21_Sensors->item[i].temperature) + " &deg;C" + " / " + 
+          String(HTU21_Sensors->item[i].humidity) + " %<br>";
   }
   for (int i=0; i<BMP180_Sensors->count; i++){  
     rm += "<font face='Courier New'>";
   
-    char str[15];
-    sprintf(str, "%03d - ", i+1);
-    rm += "<tab indent=20>";
-    rm += String(str) + String(BMP180_Sensors->item[i].temperature) + " &deg;C" + " / " + 
-                        String(BMP180_Sensors->item[i].pressure) + " hPa<br>";
+    //char str[15];
+    //sprintf(str, "Ch %01d - ", String(BMP180_Sensors->item[i].channel).c_str());
+    //rm += "Ch " + String(BMP180_Sensors->item[i].channel);
+    rm += "Ch " + String(BMP180_Sensors->item[i].channel) + " - ";
+    rm += String(BMP180_Sensors->item[i].temperature) + " &deg;C" + " / " + 
+          String(BMP180_Sensors->item[i].pressure) + " hPa<br>";
   }
 
 

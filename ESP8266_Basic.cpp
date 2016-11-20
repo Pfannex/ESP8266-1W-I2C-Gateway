@@ -201,27 +201,27 @@ void ESP8266_Basic::run_oneWire(){
   DeviceAddress DS18B20device;
   
   DS18B20.begin();
-  delay(500);
+  delay(100);
   DS18B20.setResolution(12);  //##
-  delay(500);
+  delay(100);
 
   DS18B20_Sensors.count = DS18B20.getDeviceCount();
-  delay(500);
+  delay(100);
   DS18B20.requestTemperatures(); 
-  delay(500);
+  delay(100);
 
   Serial.print("#### DeviceCount = ");
   Serial.println(DS18B20_Sensors.count);
   
   for (int i = 0; i < DS18B20_Sensors.count; i++) {
     String str_temp = String(DS18B20.getTempCByIndex(i));
-    delay(500);
+    delay(100);
 	  char temp[7];
     strcpy(temp, str_temp.c_str());  
 	  pub(2,1,i, temp);
 		
 	  DS18B20.getAddress(DS18B20device, i);
-    delay(500);
+    delay(100);
     String strDeviceAddress = "";
 	  char str[5];
 	  for (int j = 0; j < 8; j++) {
