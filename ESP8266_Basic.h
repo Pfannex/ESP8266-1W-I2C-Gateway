@@ -58,8 +58,8 @@ Erledigt: OTA onDemand
   #include "Adafruit_HTU21DF.h"  //Temperature / Humidity
 
 //MySQL
-  #include <MySQL_Connection.h>
-  #include <MySQL_Cursor.h>
+  //#include <MySQL_Connection.h>
+  //#include <MySQL_Cursor.h>
 
 //===> GPIO <--------------------------------------------------------------
 //1Wire
@@ -140,7 +140,7 @@ private:
   void pubConfig();
   
   //MySQL-Control---------------------
-  void start_MySQL();
+  //void start_MySQL();
   
   //helpers----------------------------
   void checkFlash();

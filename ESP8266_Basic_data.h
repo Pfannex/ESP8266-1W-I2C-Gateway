@@ -14,7 +14,7 @@
 
 ********************************************************************************/
 #pragma once
-#define Version "ESP8266 1W-I2C-Gateway alpha V0.311"
+#define Version "ESP8266 1W-I2C-Gateway alpha V0.312"
  
   typedef char* topicField; 
 

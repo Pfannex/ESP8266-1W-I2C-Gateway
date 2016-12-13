@@ -553,7 +553,7 @@ bool WiFiOK = false;
     //TopicHeader = ip[3];
 
     //MySQL   
-    start_MySQL();
+    //start_MySQL();
     
   }  
   return WiFiOK; 
@@ -602,7 +602,7 @@ bool MQTTOK = false;
 
 
 //===> MySQL SETUP <---------------------------------------------------------
-void ESP8266_Basic::start_MySQL(){
+/*void ESP8266_Basic::start_MySQL(){
  
   IPAddress server_addr(192,168,1,3);  // IP of the MySQL *server* here
   char user[] = "fhemuser";              // MySQL user login username
@@ -635,7 +635,7 @@ void ESP8266_Basic::start_MySQL(){
     
   conn.close();
     
-}
+}*/
 
 //===============================================================================
 //  Configuration 
